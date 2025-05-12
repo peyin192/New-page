@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+</head>
+<body>
+  <!-- Background Video -->
+  <video autoplay muted loop id="bg-video">
+    <source src="/image/Raiden Shogun 雷電将軍 Baal 4K Live Wallpapers 3840x2160 - Darwis Lim (1080p, h264).mp4" type="video/mp4" />
+    Your browser does not support HTML5 video.
+  </video>
+
+  <!-- Blur Overlay -->
+  <div class="overlay"></div>
+
+  <!-- Profile Content -->
+  <div class="content">
+    <img src="image/avt.jpg" alt="Avatar" class="avatar" />
+    <h1>Nguyễn Hoàng Tuấn Nam</h1>
+    <p>@peyin</p>
+    <div class="buttons">
+      <a href="https://www.facebook.com/profile.php?id=61576001974243" target="_blank"> <i class="fa-brands fa-facebook"></i> Facebook</a>
+      <a href="https://github.com/peyin192" target="_blank"> <i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="https://www.instagram.com/lingg.huha/" target="_blank"> <i class="fa-brands fa-instagram"></i> Instagram</a>
+    </div>
+  </div>
+
+  <!-- Chat Toggle -->
+  <div id="chat-toggle"> <i class="fa-solid fa-comment"></i> Chat</div>
+
+  <!-- Chat Box -->
+  <div id="chat-box">
+    <div class="chat-header">
+      <span>Bot Hỗ Trợ</span>
+      <button id="close-chat">×</button>
+    </div>
+    <div class="chat-body" id="chat-body"></div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Nhập tin nhắn...">
+      <button id="send-btn">Gửi</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
