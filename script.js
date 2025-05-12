@@ -24,7 +24,7 @@ const chatToggle = document.getElementById("chat-toggle");
 
       const avatar = document.createElement("img");
       avatar.classList.add("chat-avatar");
-      avatar.src = sender === "bot" ? "/image/ảnh raiden.jpg" : "avatar.jpg";
+      avatar.src = sender === "bot" ? "image/ảnh raiden.jpg" : "avatar.jpg";
 
       const bubble = document.createElement("div");
       bubble.classList.add("chat-bubble");
