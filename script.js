@@ -65,7 +65,7 @@ const chatToggle = document.getElementById("chat-toggle");
 
         setTimeout(() => {
           typing.remove();
-          appendMessage("bot", `Mình đã nhận được: "${msg}"`);
+          appendMessage("bot", `Mình nghe, hãy đợi mình chút nhé, mình sẽ trả lời bạn ngay!`);
         }, 1000);
       }
     });
@@ -75,3 +75,99 @@ const chatToggle = document.getElementById("chat-toggle");
         sendBtn.click();
       }
     });
+    const canvas = document.getElementById('star-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    let stars = [];
+    
+    function createStar() {
+      const x = Math.random() * canvas.width;
+      const y = Math.random() * canvas.height / 2;
+      const length = Math.random() * 80 + 50;
+      const speed = Math.random() * 3 + 2;
+    
+      stars.push({ x, y, length, speed });
+    }
+    
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+      for (let i = 0; i < stars.length; i++) {
+        const star = stars[i];
+        ctx.beginPath();
+        const gradient = ctx.createLinearGradient(star.x, star.y, star.x + star.length, star.y + star.length);
+        gradient.addColorStop(0, 'rgba(255,255,255,0.9)');
+        gradient.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.strokeStyle = gradient;
+        ctx.moveTo(star.x, star.y);
+        ctx.lineTo(star.x + star.length, star.y + star.length);
+        ctx.stroke();
+    
+        star.x += star.speed;
+        star.y += star.speed;
+        star.length -= 0.5;
+    
+        if (star.x > canvas.width || star.y > canvas.height || star.length <= 0) {
+          stars.splice(i, 1);
+          i--;
+        }
+      }
+    
+      if (Math.random() < 0.03) createStar();
+    
+      requestAnimationFrame(drawStars);
+    }
+    
+    drawStars();
+    
+    window.addEventListener('resize', () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+    const particleCanvas = document.getElementById('particle-canvas');
+const pctx = particleCanvas.getContext('2d');
+
+particleCanvas.width = window.innerWidth;
+particleCanvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 100; i++) {
+  particles.push({
+    x: Math.random() * particleCanvas.width,
+    y: Math.random() * particleCanvas.height,
+    radius: Math.random() * 2 + 1,
+    speedX: (Math.random() - 0.5) * 0.3,
+    speedY: (Math.random() - 0.5) * 0.3,
+    opacity: Math.random()
+  });
+}
+
+function drawParticles() {
+  pctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+
+  for (let p of particles) {
+    pctx.beginPath();
+    pctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+    pctx.fillStyle = `rgba(255, 255, 255, ${p.opacity})`;
+    pctx.fill();
+
+    p.x += p.speedX;
+    p.y += p.speedY;
+
+    if (p.x < 0 || p.x > particleCanvas.width) p.speedX *= -1;
+    if (p.y < 0 || p.y > particleCanvas.height) p.speedY *= -1;
+  }
+
+  requestAnimationFrame(drawParticles);
+}
+
+drawParticles();
+
+window.addEventListener('resize', () => {
+  particleCanvas.width = window.innerWidth;
+  particleCanvas.height = window.innerHeight;
+});

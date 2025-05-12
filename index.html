@@ -10,10 +10,15 @@
 </head>
 <body>
   <!-- Background Video -->
+  <canvas id="star-canvas"></canvas>
+  <canvas id="particle-canvas"></canvas>
+  
   <video autoplay muted loop id="bg-video">
     <source src="image/Raiden Shogun 雷電将軍 Baal 4K Live Wallpapers 3840x2160 - Darwis Lim (1080p, h264).mp4" type="video/mp4" />
     Your browser does not support HTML5 video.
   </video>
+  
+
 
   <!-- Blur Overlay -->
   <div class="overlay"></div>
@@ -21,7 +26,7 @@
   <!-- Profile Content -->
   <div class="content">
     <img src="image/avt.jpg" alt="Avatar" class="avatar" />
-    <h1>Nguyễn Hoàng Tuấn Nam</h1>
+    <h1 class="typing">Nguyễn Hoàng Tuấn Nam</h1>
     <p>@peyin</p>
     <div class="buttons">
       <a href="https://www.facebook.com/profile.php?id=61576001974243" target="_blank"> <i class="fa-brands fa-facebook"></i> Facebook</a>
@@ -36,7 +41,7 @@
   <!-- Chat Box -->
   <div id="chat-box">
     <div class="chat-header">
-      <span>Bot Hỗ Trợ</span>
+      <span>Chat with me</span>
       <button id="close-chat">×</button>
     </div>
     <div class="chat-body" id="chat-body"></div>
