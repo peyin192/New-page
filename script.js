@@ -69,6 +69,43 @@ const chatToggle = document.getElementById("chat-toggle");
         }, 1000);
       }
     });
+    import {
+      collection,
+      addDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+    
+    const messagesRef = collection(window.db, "messages");
+    
+    sendBtn.addEventListener("click", async () => {
+      const msg = userInput.value.trim();
+      if (msg !== "") {
+        appendMessage("user", msg);
+        userInput.value = "";
+    
+        await addDoc(messagesRef, {
+          sender: "user",
+          text: msg,
+          createdAt: serverTimestamp()
+        });
+      }
+    });
+    import {
+      onSnapshot,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+    
+    const q = query(messagesRef, orderBy("createdAt"));
+    
+    onSnapshot(q, (snapshot) => {
+      chatBody.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        appendMessage(data.sender, data.text, false);
+      });
+    });
+        
 
     userInput.addEventListener("keypress", function (e) {
       if (e.key === "Enter") {

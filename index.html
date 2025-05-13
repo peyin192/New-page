@@ -6,21 +6,15 @@
   <title>My Profile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
-
 </head>
 <body>
-  <!-- Background Video -->
+  <!-- Background -->
   <canvas id="star-canvas"></canvas>
   <canvas id="particle-canvas"></canvas>
-  
   <video autoplay muted loop id="bg-video">
-    <source src="image/Raiden Shogun 雷電将軍 Baal 4K Live Wallpapers 3840x2160 - Darwis Lim (1080p, h264).mp4" type="video/mp4" />
+    <source src="/image/Raiden Shogun 雷電将軍 Baal 4K Live Wallpapers 3840x2160 - Darwis Lim (1080p, h264).mp4" type="video/mp4" />
     Your browser does not support HTML5 video.
   </video>
-  
-
-
-  <!-- Blur Overlay -->
   <div class="overlay"></div>
 
   <!-- Profile Content -->
@@ -29,16 +23,14 @@
     <h1 class="typing">Nguyễn Hoàng Tuấn Nam</h1>
     <p>@peyin</p>
     <div class="buttons">
-      <a href="https://www.facebook.com/profile.php?id=61576001974243" target="_blank"> <i class="fa-brands fa-facebook"></i> Facebook</a>
-      <a href="https://github.com/peyin192" target="_blank"> <i class="fa-brands fa-github"></i> GitHub</a>
-      <a href="https://www.instagram.com/lingg.huha/" target="_blank"> <i class="fa-brands fa-instagram"></i> Instagram</a>
+      <a href="https://www.facebook.com/profile.php?id=61576001974243" target="_blank"><i class="fa-brands fa-facebook"></i> Facebook</a>
+      <a href="https://github.com/peyin192" target="_blank"><i class="fa-brands fa-github"></i> GitHub</a>
+      <a href="https://www.instagram.com/lingg.huha/" target="_blank"><i class="fa-brands fa-instagram"></i> Instagram</a>
     </div>
   </div>
 
-  <!-- Chat Toggle -->
-  <div id="chat-toggle"> <i class="fa-solid fa-comment"></i> Chat</div>
-
-  <!-- Chat Box -->
+  <!-- Chat UI -->
+  <div id="chat-toggle"><i class="fa-solid fa-comment"></i> Chat</div>
   <div id="chat-box">
     <div class="chat-header">
       <span>Chat with me</span>
@@ -51,7 +43,94 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- Firebase SDK & Chat -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      serverTimestamp,
+      onSnapshot,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/11.7.1/firebase-firestore.js";
 
+    const firebaseConfig = {
+      apiKey: "AIzaSyAWZxmiIk0r7KISrJgCFlKgLr7YN1tTLl8",
+      authDomain: "my-profile-chat.firebaseapp.com",
+      projectId: "my-profile-chat",
+      storageBucket: "my-profile-chat.appspot.com",
+      messagingSenderId: "1035643778198",
+      appId: "1:1035643778198:web:cac62c260cbf006df1feb7",
+      measurementId: "G-DBPQFQY5VR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const messagesRef = collection(db, "messages");
+
+    const chatToggle = document.getElementById("chat-toggle");
+    const chatBox = document.getElementById("chat-box");
+    const closeChat = document.getElementById("close-chat");
+    const sendBtn = document.getElementById("send-btn");
+    const chatBody = document.getElementById("chat-body");
+    const userInput = document.getElementById("user-input");
+
+    chatToggle.addEventListener("click", () => {
+      chatBox.style.display = "flex";
+      chatToggle.style.display = "none";
+    });
+
+    closeChat.addEventListener("click", () => {
+      chatBox.style.display = "none";
+      chatToggle.style.display = "block";
+    });
+
+    function appendMessage(sender, text) {
+      const msg = document.createElement("div");
+      msg.classList.add("chat-msg", sender);
+
+      const avatar = document.createElement("img");
+      avatar.classList.add("chat-avatar");
+      avatar.src = sender === "bot" ? "image/ảnh raiden.jpg" : "avatar.jpg";
+
+      const bubble = document.createElement("div");
+      bubble.classList.add("chat-bubble");
+      bubble.textContent = text;
+
+      msg.appendChild(avatar);
+      msg.appendChild(bubble);
+      chatBody.appendChild(msg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+    }
+
+    sendBtn.addEventListener("click", async () => {
+      const msg = userInput.value.trim();
+      if (msg !== "") {
+        await addDoc(messagesRef, {
+          sender: "user",
+          text: msg,
+          createdAt: serverTimestamp()
+        });
+        userInput.value = "";
+      }
+    });
+
+    userInput.addEventListener("keypress", function (e) {
+      if (e.key === "Enter") {
+        sendBtn.click();
+      }
+    });
+
+    const q = query(messagesRef, orderBy("createdAt"));
+    onSnapshot(q, snapshot => {
+      chatBody.innerHTML = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        appendMessage(data.sender, data.text);
+      });
+    });
+  </script>
 </body>
 </html>

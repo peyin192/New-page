@@ -41,6 +41,7 @@ body, html {
   transform: translate(-50%, -50%);
   text-align: center;
   animation: fadeIn 1.2s ease-out;
+
   /* opacity: 0; */ 
   /* transform: translateY(30px); */
   /* animation: slideUp 1s ease-out forwards; */
